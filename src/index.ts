@@ -1,4 +1,4 @@
-import { Role, SubmissionStatus } from "../types/index";
+import { Role, SubmissionStatus } from "./types/index";
 import type {
   ApiResponse,
   Course,
@@ -9,7 +9,7 @@ import type {
   User,
   UserPreview,
   UserUpdate,
-} from "../types/index";
+} from "./types/index";
 
 // ===== USING INTERFACES =====
 const student: User = {

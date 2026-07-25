@@ -1,5 +1,5 @@
-import { Role } from "../types/index";
-import type { User } from "../types/index";
+import { Role } from "./types/index";
+import type { User } from "./types/index";
 
 // 1. getUser function with typed parameters and User object return type
 function getUser(id: number): User {
