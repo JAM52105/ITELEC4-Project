@@ -1,78 +1,149 @@
+import { Role, SubmissionStatus } from "../types/index";
+import type {
+  ApiResponse,
+  Course,
+  PublicUser,
+  RoleCount,
+  StringOrNumber,
+  Submission,
+  User,
+  UserPreview,
+  UserUpdate,
+} from "../types/index";
 
-// At the TOP of src/index.ts
-import type { User, Course, Submission } from "../types/index";
-// ... (your previous code) ...
 // ===== USING INTERFACES =====
 const student: User = {
-id: 1,
-name: "Juan dela Cruz",
-email: "juan@example.com",
-role: "student",
-isActive: true,
+  id: 1,
+  name: "Juan dela Cruz",
+  email: "juan@example.com",
+  role: Role.Student,
+  isActive: true,
+  score: 94,
 };
+
 const course: Course = {
-code: "ITELECT4",
-title: "IT Elective 4",
-units: 3,
-semester: "1st Semester 2026-2027",
+  code: "ITELECT4",
+  title: "IT Elective 4",
+  units: 3,
+  semester: "1st Semester 2026-2027",
 };
+
+const submission: Submission = {
+  id: 1,
+  studentId: student.id,
+  courseCode: course.code,
+  repoUrl: "https://github.com/example/assignment",
+  submittedAt: new Date(),
+  score: 90,
+};
+
 console.log(student);
 console.log(course);
+console.log(submission);
 
 // ===== PRIMITIVE TYPE ANNOTATIONS =====
-// Variables with explicit types
 const projectName: string = "itelect4-project";
 const currentYear: number = 2026;
 const isFullStack: boolean = true;
 const nothing: null = null;
 const notSet: undefined = undefined;
-// Function: typed parameters + typed return value
+
 function greet(name: string, year: number): string {
-return `Welcome to ${name} -- AY ${year}!`;
+  return `Welcome to ${name} -- AY ${year}!`;
 }
-// void: function that does NOT return a value
+
 function logMessage(message: string): void {
-console.log(message);
+  console.log(message);
 }
+
 logMessage(greet(projectName, currentYear));
 
 // ===== SPECIAL TYPES =====
-// any -- disables TypeScript type checking
-// [!] Avoid using this; it defeats the purpose of TypeScript
 let anything: any = "hello";
-anything = 42; // No error
-anything = true; // No error
-// unknown -- the safer version of any
-// You MUST check the type before using it
+anything = 42;
+anything = true;
+
 let userInput: unknown = "test";
 if (typeof userInput === "string") {
-console.log(userInput.toUpperCase()); // OK -- TypeScript knows it's a string here
+  console.log(userInput.toUpperCase());
 }
-// never -- a function that NEVER returns
-// Used when a function always throws an error or loops forever
+
 function throwError(message: string): never {
-throw new Error(message);
+  throw new Error(message);
 }
 
 // ===== TYPE NARROWING =====
-import type { StringOrNumber } from "../types/index";
-// Narrowing with typeof
-// Without the if-check, TypeScript would error:
-// Property 'toUpperCase' does not exist on type 'number'
 function processInput(input: StringOrNumber): string {
-if (typeof input === "string") {
-return input.toUpperCase(); // TypeScript knows: input is string here
+  if (typeof input === "string") {
+    return input.toUpperCase();
+  }
+  return input.toFixed(2);
 }
-return input.toFixed(2); // TypeScript knows: input is number here
-}
-// Narrowing with instanceof
-// Used with class instances like Date, Error, etc.
+
 function formatDate(value: string | Date): string {
-if (value instanceof Date) {
-return value.toLocaleDateString(); // TypeScript knows: it's a Date
+  if (value instanceof Date) {
+    return value.toLocaleDateString();
+  }
+  return value;
 }
-return value; // TypeScript knows: it's a string
+
+console.log(processInput("hello"));
+console.log(processInput(3.14159));
+console.log(formatDate(new Date()));
+
+// ===== GENERIC FUNCTIONS =====
+function getFirst<T>(items: T[]): T | undefined {
+  return items[0];
 }
-console.log(processInput("hello")); // HELLO
-console.log(processInput(3.14159)); // 3.14
-console.log(formatDate(new Date())); // e.g. 7/4/2026
+
+function getById<T extends { id: number }>(items: T[], id: number): T | undefined {
+  return items.find((item) => item.id === id);
+}
+
+const firstUser = getFirst<User>([student]);
+const foundUser = getById<User>([student], 1);
+console.log(firstUser?.name);
+console.log(foundUser?.email);
+
+// ===== GENERIC INTERFACE USAGE =====
+const userResponse: ApiResponse<User> = {
+  success: true,
+  data: student,
+  message: "User loaded successfully",
+};
+
+const courseResponse: ApiResponse<Course[]> = {
+  success: true,
+  data: [course],
+};
+
+console.log(userResponse.data.name);
+console.log(courseResponse.data[0]?.title ?? "No course available");
+
+// ===== UTILITY TYPES =====
+const patch: UserUpdate = { name: "Juan D. Cruz" };
+const preview: UserPreview = { id: 1, name: "Juan dela Cruz", role: Role.Student };
+const publicProfile: PublicUser = { id: 1, name: "Juan dela Cruz", role: Role.Student, score: 94 };
+const roleCount: RoleCount = { student: 45, admin: 2, instructor: 3 };
+
+function makeSubmission(courseCode: string) {
+  return { id: 1, studentId: 1, courseCode, submittedAt: new Date() };
+}
+
+type NewSubmission = ReturnType<typeof makeSubmission>;
+const gt1Submission: NewSubmission = makeSubmission("ITELECT4");
+
+console.log(patch.name);
+console.log(preview.role);
+console.log(publicProfile.score);
+console.log(roleCount.student);
+console.log(gt1Submission.courseCode);
+
+// ===== ENUMS =====
+let status: SubmissionStatus = SubmissionStatus.Pending;
+console.log(SubmissionStatus[status]);
+status = SubmissionStatus.Graded;
+console.log(status === SubmissionStatus.Graded);
+
+const currentRole = Role.Student;
+console.log(currentRole);
