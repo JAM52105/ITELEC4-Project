@@ -3,6 +3,7 @@ export const enum Role {
   Student = "student",
   Admin = "admin",
   Instructor = "instructor",
+  Security = "security",
 }
 
 // ===== INTERFACES =====
@@ -29,6 +30,24 @@ export interface Submission {
   repoUrl: string;
   submittedAt: Date;
   score?: number;
+}
+
+export interface Item {
+  id: number;
+  title: string;
+  description?: string;
+  location: string;
+  foundAt: Date;
+  foundBy: number; // user id
+  status: "found" | "claimed" | "returned";
+}
+
+export interface Claim {
+  id: number;
+  itemId: number;
+  userId: number;
+  claimedAt: Date;
+  verified: boolean;
 }
 
 // ===== TYPE ALIASES =====
