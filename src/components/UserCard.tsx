@@ -19,10 +19,8 @@ function UserCard({ user, onSelect, isSelected = false, isDarkMode = false }: Us
   return (
     <div
       onClick={handleClick}
-      className={`rounded-lg border ${isDarkMode ? "bg-slate-900 border-slate-700" : "bg-slate-50 border-gray-200 hover:border-gray-300"} p-5 shadow-sm transition-all ${
-        isSelected
-          ? "border-blue-500 ring-2 ring-blue-500/30"
-          : "border-gray-200 hover:border-gray-300 dark:border-slate-700"
+      className={`rounded-lg border bg-slate-50 dark:bg-slate-900 dark:border-slate-700 p-5 shadow-sm transition-all ${
+        isSelected ? "border-blue-500 ring-2 ring-blue-500/30" : "hover:border-gray-300"
       }`}
     >
       <h3 className="text-lg font-bold text-slate-900 dark:text-white">{user.name}</h3>
