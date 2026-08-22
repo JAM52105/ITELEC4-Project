@@ -1,9 +1,9 @@
-import type { Item } from "../types/index";
+import type { ApiItem } from "../types/index";
 
 interface CourseCardProps {
-  course: Item;
+  course: ApiItem;
   variant?: "default" | "compact";
-  onClaim?: (item: Item) => void;
+  onClaim?: (item: ApiItem) => void;
   isDarkMode?: boolean;
 }
 
@@ -24,7 +24,7 @@ function CourseCard({ course, variant = "default", onClaim }: CourseCardProps) {
           Claim item
         </button>
       )}
-      {isCompact && <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">Found: {course.foundAt.toLocaleDateString()}</p>}
+      {isCompact && <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">Found: {new Date(course.foundAt).toLocaleDateString()}</p>}
     </div>
   );
 }

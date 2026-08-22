@@ -1,23 +1,41 @@
+import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router";
+import type { ApiItem } from "../types/index";
 import CourseCard from "../components/CourseCard";
-import { sampleItems } from "../data/mockData";
+import { fetchItemById } from "../api/client";
 
 function ItemDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const item = sampleItems.find((i) => String(i.id) === id);
 
-  if (!item) {
-    return <div className="rounded-lg bg-red-50 p-4 text-red-700">No item found with id "{id}".</div>;
+  // The id from the URL goes INTO the key, so /items/101 and /items/102
+  // get one cache entry each instead of sharing one.
+  const { data, isPending, isError, error } = useQuery<ApiItem>({
+    queryKey: ["items", id],
+    queryFn: () => fetchItemById(id!),
+    enabled: id !== undefined,
+  });
+
+  if (isPending) {
+    return <div className="animate-pulse p-6">Loading item...</div>;
+  }
+
+  if (isError) {
+    return <div className="rounded-lg bg-red-50 p-4 text-red-700">{error.message}</div>;
   }
 
   return (
     <div>
-      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">{item.title}</h2>
+      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">{data.title}</h2>
       <div className="max-w-sm">
-        <CourseCard course={item} />
+        <CourseCard course={data} />
       </div>
-      <button onClick={() => navigate('/items')} className="mt-4 rounded bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700">Back to Items</button>
+      <button
+        onClick={() => navigate("/items")}
+        className="mt-4 rounded bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+      >
+        Back to Items
+      </button>
     </div>
   );
 }
