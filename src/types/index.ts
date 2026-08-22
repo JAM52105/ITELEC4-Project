@@ -108,3 +108,21 @@ export const topStudent: StudentWithCourse = {
 
 printId(101);
 printId("S2026-001");
+
+// ===== API TYPES (Session 7) =====
+// JSON has no Date, and json-server writes ids as strings. So what the
+// API hands back is NOT the Item/Claim shape declared above. Both types
+// below are DERIVED from those, so Item/Claim stay the single source of
+// truth -- add a field there and these two inherit it.
+export type ApiItem = Omit<Item, "id" | "foundAt"> & {
+  id: string; // json-server ids look like "z4U3v8og06g"
+  foundAt: string; // an ISO string, never a Date object
+};
+
+export type ApiClaim = Omit<Claim, "id" | "claimedAt"> & {
+  id: string;
+  claimedAt: string;
+};
+
+// What we SEND when creating one. No id yet -- the server makes it.
+export type NewClaim = Omit<ApiClaim, "id">;
