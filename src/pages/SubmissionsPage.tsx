@@ -1,14 +1,27 @@
-import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { ApiClaim } from "../types/index";
 import SubmissionBadge from "../components/SubmissionBadge";
 import { fetchClaims, createClaim } from "../api/client";
 import { sampleUsers } from "../data/mockData";
+import { claimSchema, type ClaimFormValues } from "../schemas/claimSchema";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 function SubmissionsPage() {
-  // Local, because only this one form reads it. Not store material.
-  const [itemId, setItemId] = useState<string>("");
   const queryClient = useQueryClient();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ClaimFormValues>({
+    resolver: zodResolver(claimSchema),
+    defaultValues: { itemId: "" },
+  });
 
   // 1. READ
   const { data, isPending, isError } = useQuery<ApiClaim[]>({
@@ -22,13 +35,13 @@ function SubmissionsPage() {
     onSuccess: () => {
       // "the claims list is out of date now -- go and refetch it"
       queryClient.invalidateQueries({ queryKey: ["claims"] });
-      setItemId("");
+      reset();
     },
   });
 
-  const handleAdd = (): void => {
+  const onSubmit = (values: ClaimFormValues): void => {
     addClaim.mutate({
-      itemId: Number(itemId),
+      itemId: Number(values.itemId),
       userId: 1,
       claimedAt: new Date().toISOString(),
       verified: false,
@@ -47,21 +60,18 @@ function SubmissionsPage() {
     <div>
       <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">My Submissions</h2>
 
-      <div className="mb-6 flex gap-2">
-        <input
-          value={itemId}
-          onChange={(e) => setItemId(e.target.value)}
-          placeholder="Item ID to claim"
-          className="w-full rounded border border-gray-300 p-2"
-        />
-        <button
-          onClick={handleAdd}
-          disabled={itemId === "" || addClaim.isPending}
-          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:bg-gray-400"
-        >
+      <form onSubmit={handleSubmit(onSubmit)} className="mb-6 flex flex-wrap items-start gap-2" noValidate>
+        <div className="flex-1">
+          <Label htmlFor="itemId" className="mb-1">
+            Item ID to claim
+          </Label>
+          <Input id="itemId" placeholder="Item ID to claim" {...register("itemId")} />
+          {errors.itemId && <p className="mt-1 text-sm text-red-700">{errors.itemId.message}</p>}
+        </div>
+        <Button type="submit" disabled={addClaim.isPending} className="mt-6">
           {addClaim.isPending ? "Saving..." : "Add"}
-        </button>
-      </div>
+        </Button>
+      </form>
 
       {addClaim.isError && <p className="mb-4 text-sm text-red-700">{addClaim.error.message}</p>}
 
