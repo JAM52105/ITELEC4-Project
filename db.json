@@ -35,6 +35,13 @@
       "userId": 1,
       "claimedAt": "2026-07-28T14:00:00.000Z",
       "verified": false
+    },
+    {
+      "itemId": 101,
+      "userId": 1,
+      "claimedAt": "2026-08-29T14:09:09.388Z",
+      "verified": false,
+      "id": "u6HgHJe"
     }
   ]
 }
