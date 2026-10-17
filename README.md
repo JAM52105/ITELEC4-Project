@@ -2,6 +2,15 @@
 
 This project models a simple campus learning platform for managing users, courses, and submissions. It is designed to demonstrate advanced TypeScript concepts such as interfaces, type aliases, generics, utility types, and enums while keeping the domain easy to understand for future modules.
 
+## Live deployments
+- Frontend: https://itelec-4-project.vercel.app
+- Backend API: https://jam52105-itelect4-backend.vercel.app
+- Backend health check: https://jam52105-itelect4-backend.vercel.app/api/health
+
+## Repositories
+- Frontend: https://github.com/JAM52105/ITELEC4-Project
+- Backend: https://github.com/JAM52105/itelect4-backend
+
 ## Types defined so far
 - User
 - Course
