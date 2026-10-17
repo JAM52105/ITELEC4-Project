@@ -23,7 +23,7 @@ function ItemsPage() {
   if (isError) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-700">
-        {error.message} -- is json-server running on port 3001?
+        {error.message}
       </div>
     );
   }
