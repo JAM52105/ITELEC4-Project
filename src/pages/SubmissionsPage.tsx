@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { ApiClaim } from "../types/index";
 import SubmissionBadge from "../components/SubmissionBadge";
 import { fetchClaims, createClaim } from "../api/client";
-import { sampleUsers } from "../data/mockData";
 import { claimSchema, type ClaimFormValues } from "../schemas/claimSchema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,12 +39,7 @@ function SubmissionsPage() {
   });
 
   const onSubmit = (values: ClaimFormValues): void => {
-    addClaim.mutate({
-      itemId: Number(values.itemId),
-      userId: 1,
-      claimedAt: new Date().toISOString(),
-      verified: false,
-    });
+    addClaim.mutate({ itemId: values.itemId });
   };
 
   if (isPending) {
@@ -58,7 +52,7 @@ function SubmissionsPage() {
 
   return (
     <div>
-      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">My Submissions</h2>
+      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">My Claims</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mb-6 flex flex-wrap items-start gap-2" noValidate>
         <div className="flex-1">
@@ -77,7 +71,7 @@ function SubmissionsPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {data.map((c) => (
-          <SubmissionBadge key={c.id} claim={c} claimedBy={sampleUsers.find((u) => u.id === c.userId)?.name} />
+          <SubmissionBadge key={c.id} claim={c} />
         ))}
       </div>
     </div>

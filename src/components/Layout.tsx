@@ -26,7 +26,10 @@ function Layout() {
             Items
           </NavLink>
           <NavLink to="/submissions" className={linkClass}>
-            Submissions
+            Claims
+          </NavLink>
+          <NavLink to="/course-submissions" className={linkClass}>
+            Course Submissions
           </NavLink>
           {userName === null ? (
             <NavLink to="/login" className={linkClass}>

@@ -17,6 +17,7 @@ function CourseCard({ course, variant = "default", onClaim }: CourseCardProps) {
         {course.title}
       </h3>
       {!isCompact && <p className="text-slate-600 dark:text-slate-300">{course.description}</p>}
+      <p className="text-xs text-slate-500 dark:text-slate-400">Item ID: {course.id}</p>
       <p className="text-sm text-slate-500 dark:text-slate-400">Location: {course.location}</p>
       <p className="text-sm text-slate-500 dark:text-slate-400">Status: {course.status}</p>
       {isClaimable && (

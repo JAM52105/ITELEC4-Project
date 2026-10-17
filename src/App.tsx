@@ -6,6 +6,7 @@ import ItemsPage from "./pages/ItemsPage";
 import ItemDetailPage from "./pages/ItemDetailPage";
 import LoginPage from "./pages/LoginPage";
 import SubmissionsPage from "./pages/SubmissionsPage";
+import CourseSubmissionsPage from "./pages/CourseSubmissionsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -13,12 +14,13 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<DashboardPage />} />
-        <Route path="items" element={<ItemsPage />} />
-        <Route path="items/:id" element={<ItemDetailPage />} />
         <Route path="login" element={<LoginPage />} />
 
         <Route element={<ProtectedRoute />}>
+          <Route path="items" element={<ItemsPage />} />
+          <Route path="items/:id" element={<ItemDetailPage />} />
           <Route path="submissions" element={<SubmissionsPage />} />
+          <Route path="course-submissions" element={<CourseSubmissionsPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

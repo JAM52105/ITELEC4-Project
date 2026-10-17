@@ -23,6 +23,8 @@ export interface Course {
   semester: string;
 }
 
+export type ApiCourse = Course;
+
 export interface Submission {
   id: number;
   studentId: number;
@@ -109,20 +111,51 @@ export const topStudent: StudentWithCourse = {
 printId(101);
 printId("S2026-001");
 
-// ===== API TYPES (Session 7) =====
-// JSON has no Date, and json-server writes ids as strings. So what the
-// API hands back is NOT the Item/Claim shape declared above. Both types
-// below are DERIVED from those, so Item/Claim stay the single source of
-// truth -- add a field there and these two inherit it.
-export type ApiItem = Omit<Item, "id" | "foundAt"> & {
-  id: string; // json-server ids look like "z4U3v8og06g"
-  foundAt: string; // an ISO string, never a Date object
-};
-
-export type ApiClaim = Omit<Claim, "id" | "claimedAt"> & {
+export interface ApiItem {
   id: string;
-  claimedAt: string;
-};
+  title: string;
+  description?: string;
+  location: string;
+  foundAt: string;
+  status: "found" | "claimed" | "returned";
+  userId: string;
+  category: "electronics" | "clothing" | "accessories" | "books" | "other";
+  estimatedValue: number;
+}
 
-// What we SEND when creating one. No id yet -- the server makes it.
-export type NewClaim = Omit<ApiClaim, "id">;
+export interface ApiClaim {
+  id: string;
+  userId: string;
+  itemId: string;
+  claimedAt: string;
+  verified: boolean;
+}
+
+export interface NewClaim {
+  itemId: string;
+}
+
+export interface ApiSubmission {
+  id: string;
+  userId: string;
+  courseCode: string;
+  repoUrl: string;
+  submittedAt: string;
+  score?: number;
+}
+
+export interface NewSubmission {
+  courseCode: string;
+  repoUrl: string;
+}
+
+export interface RegisterInput {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  userName: string;
+}

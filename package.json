@@ -5,10 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "api": "json-server db.json --port 3001",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc -p tsconfig.app.json --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p tsconfig.app.json --noEmit"
   },
   "repository": {
     "type": "git",
@@ -29,7 +28,6 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
-    "json-server": "^0.17.4",
     "tailwindcss": "^4.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
