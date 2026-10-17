@@ -123,6 +123,14 @@ export interface ApiItem {
   estimatedValue: number;
 }
 
+export interface NewItem {
+  title: string;
+  description?: string;
+  location: string;
+  category: ApiItem["category"];
+  estimatedValue: number;
+}
+
 export interface ApiClaim {
   id: string;
   userId: string;

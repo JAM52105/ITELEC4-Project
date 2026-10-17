@@ -5,6 +5,7 @@ import type {
   ApiSubmission,
   AuthResponse,
   NewClaim,
+  NewItem,
   NewSubmission,
   RegisterInput,
 } from "../types/index";
@@ -75,6 +76,15 @@ export async function fetchItems(): Promise<ApiItem[]> {
 
 export async function fetchItemById(id: string): Promise<ApiItem> {
   const result = await request<{ item: ApiItem }>(`/items/${encodeURIComponent(id)}`, {}, true);
+  return result.item;
+}
+
+export async function createItem(input: NewItem): Promise<ApiItem> {
+  const result = await request<{ item: ApiItem }>(
+    "/items",
+    { method: "POST", body: JSON.stringify(input) },
+    true,
+  );
   return result.item;
 }
 
