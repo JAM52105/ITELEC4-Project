@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import SubmissionsPage from "./pages/SubmissionsPage";
 import CourseSubmissionsPage from "./pages/CourseSubmissionsPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import AiReviewPage from "./pages/AiReviewPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="items/:id" element={<ItemDetailPage />} />
           <Route path="submissions" element={<SubmissionsPage />} />
           <Route path="course-submissions" element={<CourseSubmissionsPage />} />
+          <Route path="review" element={<AiReviewPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
