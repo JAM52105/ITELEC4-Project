@@ -1,3 +1,5 @@
+[![CI](https://github.com/JAM52105/ITELEC4-Project/actions/workflows/ci.yml/badge.svg)](https://github.com/JAM52105/ITELEC4-Project/actions/workflows/ci.yml)
+
 # ITELEC4 Project
 
 This project models a simple campus learning platform for managing users, courses, and submissions. It is designed to demonstrate advanced TypeScript concepts such as interfaces, type aliases, generics, utility types, and enums while keeping the domain easy to understand for future modules.
