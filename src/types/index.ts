@@ -167,3 +167,11 @@ export interface AuthResponse {
   token: string;
   userName: string;
 }
+
+export interface AiReply {
+  summary: string;
+  rating: "needs_improvement" | "meets_expectations" | "strong";
+  strengths: string[];
+  improvements: string[];
+  privacyConsiderations: string[];
+}

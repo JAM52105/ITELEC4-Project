@@ -2,6 +2,7 @@ import type {
   ApiClaim,
   ApiCourse,
   ApiItem,
+  AiReply,
   ApiSubmission,
   AuthResponse,
   NewClaim,
@@ -126,4 +127,12 @@ export async function createSubmission(input: NewSubmission): Promise<ApiSubmiss
     true,
   );
   return result.submission;
+}
+
+export async function askAi(prompt: string): Promise<AiReply> {
+  return request<AiReply>(
+    "/ai",
+    { method: "POST", body: JSON.stringify({ prompt }) },
+    true,
+  );
 }
